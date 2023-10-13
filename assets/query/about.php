@@ -11,6 +11,10 @@
     if($title != ""){
         $urlFriendly = str_replace(" ","-",strtolower($title)); 
     }
+    $lang ="";
+    if($_SESSION["lang"] != "EN"){
+        $lang = "_th";
+    }
 
     // echo "<pre>";
     // print_r($_POST);
@@ -27,8 +31,8 @@
     switch ($flag) {
         case "add":
             
-            $res = sql_query("
-                insert into about(
+            sql_query("
+                insert into about".$lang."(
                     image, 
                     title, 
                     urlFriendly, 
@@ -46,17 +50,38 @@
                     NOW()
                 )
             ");
+
+            if($lang == ""){
+                sql_query("
+                    insert into about_th(
+                        image, 
+                        title, 
+                        urlFriendly, 
+                        metaKeyword, 
+                        description, 
+                        status,
+                        createDate
+                    )values(
+                        '".$imgName."', 
+                        '".$title."', 
+                        '".$urlFriendly."',
+                        '".$keyword."',
+                        '".$desc."',
+                        'A',
+                        NOW()
+                    )
+                ");
+            }
             echo "Success";
             
             break;
         case "update":
             $id = $_POST["id"];
             $res = sql_query("
-                update about
+                update about".$lang."
                 set 
                     image = '".$imgName."', 
-                    title = '".$title."', 
-                    urlFriendly = '".$urlFriendly."', 
+                    title = '".$title."',
                     metaKeyword = '".$keyword."', 
                     description = '".$desc."'
                 where aboutId = '".$id."'
@@ -66,13 +91,18 @@
             break;
         case "edit":
             $id = $_POST["id"];
-            $data = getRowsData("select image, title, metaKeyword, description from about where status = 'A' and aboutId = '".$id."'");
+            $data = getRowsData("select image, title, metaKeyword, description from about".$lang." where status = 'A' and aboutId = '".$id."'");
             echo json_encode($data);
           break;
         case "del":
             $id = $_POST["id"];
             $res = sql_query("
                 update about
+                set status = 'D'
+                where aboutId = '".$id."'
+            ");
+            $res = sql_query("
+                update about_th
                 set status = 'D'
                 where aboutId = '".$id."'
             ");

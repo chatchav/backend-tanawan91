@@ -2,13 +2,22 @@
 <html lang="en">
 
     <?php 
+        session_start();
         include_once "../assets/includes/header.html";
         include_once "../assets/includes/connect-db.php";
+
+        global $con;
+        $lang ="";
+        if($_SESSION["lang"] != "EN"){
+            $lang = "_th";
+        }
+        $result = mysqli_query($con, "select aboutId, image, title, description, CreateDate from about".$lang." where status = 'A'");
+
     ?>
     
     <body class="sb-nav-fixed">
         
-        <?php include_once "../assets/includes/nevbar.html";?>
+        <?php include_once "../assets/includes/nevbar.php";?>
     
         <div id="layoutSidenav">
             
@@ -42,9 +51,7 @@
                                         </thead>
                                         <tbody>
                                             <?php
-                                                global $con;
-                                                $result = mysqli_query($con, "select aboutId, image, title, description, CreateDate from about where status = 'A'");
-                                                
+                                           
                                                 while ($row = mysqli_fetch_row($result)) {
                                             ?>
                                                 <tr>

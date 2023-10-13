@@ -2,14 +2,18 @@
 <html lang="en">
 
     <?php 
+        session_start(); 
         include_once "../assets/includes/header.html";
         include_once "../assets/includes/connect-db.php";
-
+        $lang ="";
+        if($_SESSION["lang"] != "EN"){
+            $lang = "_th";
+        }
     ?>
     
     <body class="sb-nav-fixed">
         
-        <?php include_once "../assets/includes/nevbar.html";?>
+        <?php include_once "../assets/includes/nevbar.php";?>
     
         <div id="layoutSidenav">
             
@@ -53,7 +57,8 @@
                                         <tbody>
                                             <?php
                                                 global $con;
-                                                $result = mysqli_query($con, "select serviceId, title, description, createDate  from services where status = 'A' and type = 'design'");
+                                                
+                                                $result = mysqli_query($con, "select serviceId, title, description, createDate  from services".$lang." where status = 'A' and type = 'design'");
                                                 
                                                 while ($row = mysqli_fetch_row($result)) {
                                             ?>
@@ -86,7 +91,7 @@
                                         <tbody>
                                             <?php
                                                 global $con;
-                                                $result = mysqli_query($con, "select serviceId, title, description, createDate  from services where status = 'A' and type = 'build'");
+                                                $result = mysqli_query($con, "select serviceId, title, description, createDate  from services".$lang." where status = 'A' and type = 'build'");
                                                 
                                                 while ($row = mysqli_fetch_row($result)) {
                                             ?>

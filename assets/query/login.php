@@ -10,6 +10,7 @@
         $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
         $_SESSION["fullName"] =  $row["firstname"]." ".$row["lastname"];
         $_SESSION["uId"] = $row["uId"];
+        $_SESSION["lang"] = "EN";
         echo "Success";
     }else{
         echo "Invalid username or password";

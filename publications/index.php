@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <?php 
+    <?php
+        session_start(); 
         include_once "../assets/includes/header.html";
         include_once "../assets/includes/connect-db.php";
 
@@ -9,7 +10,7 @@
     
     <body class="sb-nav-fixed">
         
-        <?php include_once "../assets/includes/nevbar.html";?>
+        <?php include_once "../assets/includes/nevbar.php";?>
     
         <div id="layoutSidenav">
             
@@ -43,7 +44,11 @@
                                         <tbody>
                                             <?php
                                                 global $con;
-                                                $result = mysqli_query($con, "select publicId, image, title, CreateDate from publications where status = 'A' order by createDate desc");
+                                                $lang ="";
+                                                if($_SESSION["lang"] != "EN"){
+                                                    $lang = "_th";
+                                                }
+                                                $result = mysqli_query($con, "select publicId, image, title, CreateDate from publications".$lang." where status = 'A' order by createDate desc");
                                                 
                                                 while ($row = mysqli_fetch_row($result)) {
                                             ?>

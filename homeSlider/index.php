@@ -8,7 +8,7 @@
     
     <body class="sb-nav-fixed">
         
-        <?php include_once "../assets/includes/nevbar.html";?>
+        <?php include_once "../assets/includes/nevbar.php";?>
     
         <div id="layoutSidenav">
             

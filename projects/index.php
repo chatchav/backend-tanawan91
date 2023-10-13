@@ -2,6 +2,7 @@
 <html lang="en">
 
     <?php 
+        session_start();
         include_once "../assets/includes/header.html";
         include_once "../assets/includes/connect-db.php";
 
@@ -12,7 +13,7 @@
     
     <body class="sb-nav-fixed">
         
-        <?php include_once "../assets/includes/nevbar.html";?>
+        <?php include_once "../assets/includes/nevbar.php";?>
     
         <div id="layoutSidenav">
             
@@ -47,7 +48,11 @@
                                         <tbody>
                                             <?php
                                                 global $con;
-                                                $result = mysqli_query($con, "select projectId, image, title, t.typeName, p.CreateDate from projects p inner join setting_project_type t on t.typeId = p.typeId where p.status = 'A' order by p.createDate desc");
+                                                $lang ="";
+                                                if($_SESSION["lang"] != "EN"){
+                                                    $lang = "_th";
+                                                }
+                                                $result = mysqli_query($con, "select projectId, image, title, t.typeName, p.CreateDate from projects".$lang." p inner join setting_project_type t on t.typeId = p.typeId where p.status = 'A' order by p.createDate desc");
                                                 
                                                 while ($row = mysqli_fetch_row($result)) {
                                             ?>

@@ -9,12 +9,16 @@
     // if($title != ""){
     //     $urlFriendly = str_replace(" ","-",strtolower($title)); 
     // }
+    $lang ="";
+    if($_SESSION["lang"] != "EN"){
+        $lang = "_th";
+    }
 
     switch ($flag) {
         case "add":
         
                 $res = sql_query("
-                    insert into services(
+                    insert into services".$lang."(
                         title,
                         type,
                         description,
@@ -26,13 +30,29 @@
                         'A'
                     )
                 ");
+
+                if($lang == ""){
+                    sql_query("
+                        insert into services_th(
+                            title,
+                            type,
+                            description,
+                            status
+                        )values(
+                            '".$title."', 
+                            '".$type."', 
+                            '".$desc."', 
+                            'A'
+                        )
+                    ");
+                }
                 echo "Success";
             
             break;
         case "update":
             $id = $_POST["id"];
             $res = sql_query("
-                update services
+                update services".$lang."
                 set 
                     title = '".$title."',
                     type = '".$type."',
@@ -43,13 +63,19 @@
             break;
         case "edit":
             $id = $_POST["id"];
-            $data = getRowsData("select serviceId, title, type, description  from services where status = 'A' and serviceId = '".$id."'");
+            $data = getRowsData("select serviceId, title, type, description  from services".$lang." where status = 'A' and serviceId = '".$id."'");
             echo json_encode($data);
           break;
         case "del":
             $id = $_POST["id"];
             $res = sql_query("
                 update services
+                set status = 'D'
+                where serviceId = '".$id."'
+            ");
+
+            sql_query("
+                update services_th
                 set status = 'D'
                 where serviceId = '".$id."'
             ");

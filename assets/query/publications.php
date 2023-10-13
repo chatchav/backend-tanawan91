@@ -12,6 +12,10 @@
     if($title != ""){
         $urlFriendly = str_replace(" ","-",strtolower($title)); 
     }
+    $lang ="";
+    if($_SESSION["lang"] != "EN"){
+        $lang = "_th";
+    }
     // echo "<pre>";
     // print_r($desc);
     // echo "</pre>";
@@ -24,26 +28,8 @@
 
     switch ($flag) {
         case "add":
-        //     echo "insert into publications(
-        //         image, 
-        //         title, 
-        //         urlFriendly, 
-        //         keyword, 
-        //         description, 
-        //         shortDescription, 
-        //         status
-        //     )values(
-        //         '".$imgName."', 
-        //         '".$title."', 
-        //         '".$urlFriendly."',
-        //         '".$keyword."',
-        //         '".$desc."',
-        //         '".$shortdesc."',
-        //         'A'
-        //     )
-        // ";
             $res = sql_query("
-                insert into publications(
+                insert into publications".$lang."(
                     image, 
                     title, 
                     urlFriendly, 
@@ -63,17 +49,40 @@
                     NOW()
                 )
             ");
+
+            if($lang == ""){
+                sql_query(
+                "insert into publications_th(
+                    image, 
+                    title, 
+                    urlFriendly, 
+                    keyword, 
+                    description, 
+                    shortDescription, 
+                    status,
+                    createDate
+                )values(
+                    '".$imgName."', 
+                    '".$title."', 
+                    '".$urlFriendly."',
+                    '".$keyword."',
+                    '".$desc."',
+                    '".$shortdesc."',
+                    'A',
+                    NOW()
+                )
+                ");
+            }
             echo "Success";
             
             break;
         case "update":
             $id = $_POST["id"];
             $res = sql_query("
-                update publications
+                update publications".$lang."
                 set 
                     image = '".$imgName."', 
-                    title = '".$title."', 
-                    urlFriendly = '".$urlFriendly."', 
+                    title = '".$title."',
                     keyword = '".$keyword."',
                     description = '".$desc."',
                     shortDescription = '".$shortdesc."'
@@ -84,7 +93,7 @@
             break;
         case "edit":
             $id = $_POST["id"];
-            $data = getRowsData("select image, title, keyword, shortDescription, description  from publications where status = 'A' and publicId = '".$id."'");
+            $data = getRowsData("select image, title, keyword, shortDescription, description  from publications".$lang." where status = 'A' and publicId = '".$id."'");
             $data[0][3] = htmlspecialchars_decode($data[0][3]);
             $data[0][4] = htmlspecialchars_decode($data[0][4]);
             echo json_encode($data);
@@ -93,6 +102,11 @@
             $id = $_POST["id"];
             $res = sql_query("
                 update publications
+                set status = 'D'
+                where publicId = '".$id."'
+            ");
+            $res = sql_query("
+                update publications_th
                 set status = 'D'
                 where publicId = '".$id."'
             ");

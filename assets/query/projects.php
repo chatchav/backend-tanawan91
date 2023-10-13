@@ -23,6 +23,11 @@
     if($title != ""){
         $urlFriendly = str_replace(" ","-",strtolower($title)); 
     }
+
+    $lang ="";
+    if($_SESSION["lang"] != "EN"){
+        $lang = "_th";
+    }
     // echo "<pre>";
     // print_r($_POST);
     // print_r($_FILES);
@@ -37,7 +42,7 @@
 
     switch ($flag) {
         case "add":
-            $lastId = query_insert("insert into projects(
+            $lastId = query_insert("insert into projects".$lang."(
                 image, 
                 title, 
                 urlFriendly, 
@@ -73,6 +78,46 @@
                 NOW()
             )
             ");
+
+            if($lang == ""){
+                sql_query(
+                "insert into projects_th(
+                    image, 
+                    title, 
+                    urlFriendly, 
+                    keyword, 
+                    description, 
+                    shortDescription,
+                    typeId,
+                    year,	
+                    location,
+                    projectStatusId,
+                    area,	
+                    client,	
+                    architect,	
+                    contractor,
+                    status,
+                    createDate
+                )values(
+                    '".$imgName."', 
+                    '".$title."', 
+                    '".$urlFriendly."',
+                    '".$keyword."',
+                    '".$desc."',
+                    '".$shortdesc."',
+                    '".$type."',
+                    '".$year."',
+                    '".$location."',
+                    '".$status."',
+                    '".$area."',
+                    '".$client."',
+                    '".$architect."',
+                    '".$contractor."',
+                    'A',
+                    NOW()
+                )
+                ");
+            }
             for($i = 0; $i<$countAlbum; $i++){
                 $imgOld = (isset($_POST["albumOld"][0]) ? $_POST["albumOld"][0] : "");
                 $imgName = $imgOld;
@@ -95,11 +140,10 @@
         case "update":
             $id = $_POST["id"];
             sql_query("
-                update projects
+                update projects".$lang."
                 set 
                     image = '".$imgName."', 
                     title = '".$title."', 
-                    urlFriendly = '".$urlFriendly."', 
                     keyword = '".$keyword."', 
                     description = '".$desc."', 
                     shortDescription = '".$shortdesc."',
@@ -151,7 +195,7 @@
                 client,	
                 architect,
                 contractor  
-            from projects where status = 'A' and projectId = '".$id."'");
+            from projects".$lang." where status = 'A' and projectId = '".$id."'");
             $dataInfo[0][3] = htmlspecialchars_decode($dataInfo[0][3]);
             $dataInfo[0][4] = htmlspecialchars_decode($dataInfo[0][4]);
 
@@ -165,6 +209,11 @@
             $id = $_POST["id"];
             $res = sql_query("
                 update projects
+                set status = 'D'
+                where projectId = '".$id."'
+            ");
+            $res = sql_query("
+                update projects_th
                 set status = 'D'
                 where projectId = '".$id."'
             ");
