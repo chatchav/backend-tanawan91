@@ -24,23 +24,10 @@ switch ($method) {
         
         $urlParts = array_values(array_filter($urlParts));
 
-        if (end($urlParts) === 'publications-th') {
+        if (end($urlParts) === 'project-type-th') {
 
-            $stmt = $db->query("SELECT * FROM publications_th WHERE status = 'A'");
+            $stmt = $db->query("SELECT typeId,typeNameTH as typeName FROM `setting_project_type` WHERE status = 'A'");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } elseif (end($urlParts)) {
-            $serviceId = end($urlParts);
-
-            $stmt = $db->prepare("SELECT * FROM publications_th WHERE status = 'A' AND urlFriendly = ?");
-            $stmt->execute([$serviceId]);
-            $service = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($service) {
-                $response = $service;
-            } else {
-                http_response_code(404); 
-                $response = ["error" => "Id not found"];
-            }
         } else {
             http_response_code(400); 
             $response = ["error" => "Invalid URL format"];

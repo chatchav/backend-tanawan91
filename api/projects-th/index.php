@@ -27,10 +27,10 @@ switch ($method) {
 
             $stmt = $db->query("SELECT * FROM projects_th WHERE status = 'A'");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } elseif (is_numeric(end($urlParts))) {
-            $serviceId = (int)end($urlParts);
+        } elseif (end($urlParts)) {
+            $serviceId = end($urlParts);
 
-            $stmt = $db->prepare("SELECT * FROM projects_th WHERE projectId = ?");
+            $stmt = $db->prepare("SELECT * FROM projects_th WHERE status = 'A' AND urlFriendly = ?");
             $stmt->execute([$serviceId]);
             $service = $stmt->fetch(PDO::FETCH_ASSOC);
 

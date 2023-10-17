@@ -26,12 +26,15 @@ switch ($method) {
 
         if (end($urlParts) === 'projects') {
 
-            $stmt = $db->query("SELECT * FROM projects WHERE status = 'A'");
+            $stmt = $db->query("SELECT p.*, t.typeName 
+            FROM projects p
+            INNER JOIN setting_project_type t ON t.typeId = p.typeId
+            WHERE p.status = 'A'");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } elseif (is_numeric(end($urlParts))) {
-            $serviceId = (int)end($urlParts);
+        } elseif (end($urlParts)) {
+            $serviceId = end($urlParts);
 
-            $stmt = $db->prepare("SELECT * FROM projects WHERE projectId = ?");
+            $stmt = $db->prepare("SELECT * FROM projects WHERE status = 'A' AND urlFriendly = ?");
             $stmt->execute([$serviceId]);
             $service = $stmt->fetch(PDO::FETCH_ASSOC);
 
