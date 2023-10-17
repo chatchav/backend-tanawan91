@@ -85,4 +85,4 @@
         
     </body>
 </html>
-<script src="js/contact.js"></script>
+<script src="/js/contact.js"></script>
