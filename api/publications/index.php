@@ -28,10 +28,10 @@ switch ($method) {
 
             $stmt = $db->query("SELECT * FROM publications WHERE status = 'A'");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } elseif (is_numeric(end($urlParts))) {
-            $serviceId = (int)end($urlParts);
+        } elseif (end($urlParts)) {
+            $serviceId = end($urlParts);
 
-            $stmt = $db->prepare("SELECT * FROM publications WHERE publicId = ?");
+            $stmt = $db->prepare("SELECT * FROM publications WHERE urlFriendly = ?");
             $stmt->execute([$serviceId]);
             $service = $stmt->fetch(PDO::FETCH_ASSOC);
 
