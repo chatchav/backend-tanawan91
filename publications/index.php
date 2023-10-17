@@ -45,7 +45,7 @@
                                             <?php
                                                 global $con;
                                                 $lang ="";
-                                                if($_SESSION["lang"] != "EN"){
+                                                if(@$_SESSION["lang"] != "EN"){
                                                     $lang = "_th";
                                                 }
                                                 $result = mysqli_query($con, "select publicId, image, title, CreateDate from publications".$lang." where status = 'A' order by createDate desc");
@@ -150,4 +150,4 @@
         
     </body>
 </html>
-<script src="js/publications.js"></script>
+<script src="../js/publications.js"></script>

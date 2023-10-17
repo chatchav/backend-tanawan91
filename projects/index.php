@@ -49,7 +49,7 @@
                                             <?php
                                                 global $con;
                                                 $lang ="";
-                                                if($_SESSION["lang"] != "EN"){
+                                                if(@$_SESSION["lang"] != "EN"){
                                                     $lang = "_th";
                                                 }
                                                 $result = mysqli_query($con, "select projectId, image, title, t.typeName, p.CreateDate from projects".$lang." p inner join setting_project_type t on t.typeId = p.typeId where p.status = 'A' order by p.createDate desc");

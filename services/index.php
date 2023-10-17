@@ -2,7 +2,7 @@
 <html lang="en">
 
     <?php 
-        session_start(); 
+        @session_start(); 
         include_once "../assets/includes/header.html";
         include_once "../assets/includes/connect-db.php";
         $lang ="";
@@ -171,4 +171,4 @@
         
     </body>
 </html>
-<script src="js/services.js"></script>
+<script src="../js/services.js"></script>

@@ -2,27 +2,27 @@
 <html lang="en">
 
     <?php 
-        include_once "../../assets/includes/header.html";
-        include_once "../../assets/includes/connect-db.php";
+        include_once "../assets/includes/header.html";
+        include_once "../assets/includes/connect-db.php";
     ?>
     
     <body class="sb-nav-fixed">
         
-        <?php include_once "../../assets/includes/nevbar.php";?>
+        <?php include_once "../assets/includes/nevbar.php";?>
     
         <div id="layoutSidenav">
             
-            <?php include_once "../../assets/includes/slidebar.html";?>
+            <?php include_once "../assets/includes/slidebar.html";?>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
                         <div class="row col-sm-12 mb-4">
                             <div class="col-sm-10">
-                                <h1 class="mt-4 mb-0">PROJECT TYPE</h1>
-                                <small style="color:#e26330">Setting / Project Type</small>
+                                <h1 class="mt-4 mb-0">PROJECT STATUS</h1>
+                                <small style="color:#e26330">Setting / Project Status</small>
                             </div>
                             <div class="col-sm-2 div-btn">
-                                <button type="button" id="add-service" class="mt-4 btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Type</button>
+                                <button type="button" id="add-service" class="mt-4 btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Status</button>
                             </div>
                         </div>
                         
@@ -30,10 +30,10 @@
                             <!-- Tabs content -->
                             <div class="tab-content" id="ex1-content">
                                 <div class="tab-pane fade show active" id="design">
-                                    <table id="data-tbl">
+                                    <table>
                                         <thead>
                                             <tr>
-                                                <th>Type Name</th>
+                                                <th>Status Name</th>
                                                 <th>Create Date</th>
                                                 <th></th>
                                             </tr>
@@ -41,7 +41,7 @@
                                         <tbody>
                                             <?php
                                                 global $con;
-                                                $result = mysqli_query($con, "select typeId, typeName, CreateDate from setting_project_type where status = 'A'");
+                                                $result = mysqli_query($con, "select statusId, statusName, CreateDate from setting_project_status where status = 'A'");
                                                 
                                                 while ($row = mysqli_fetch_row($result)) {
                                             ?>
@@ -73,7 +73,7 @@
             <div class="modal-dialog" style="padding-top:5%;max-width:none;width:800px">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Type</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Add Status</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form id="frm-data" method="post">
@@ -82,19 +82,19 @@
                         <div class="modal-body">
                             <div class="row py-2">
                                 <div class="col-3">
-                                    <label for="title" class="col-form-label">Type Name : </label>
+                                    <label for="title" class="col-form-label">Status Name : </label>
                                 </div>
                                 <div class="col-9">
-                                    <input type="text" id="title" name="title" class="form-control" placeholder="Type Name">
+                                    <input type="text" id="title" name="title" class="form-control" placeholder="Status Name">
                                     <small id="txtErrtitle" style="color:red;display:none"></small>
                                 </div>
                             </div>
                             <div class="row py-2">
                                 <div class="col-3">
-                                    <label for="title" class="col-form-label">Type Name TH : </label>
+                                    <label for="title" class="col-form-label">Status Name TH : </label>
                                 </div>
                                 <div class="col-9">
-                                    <input type="text" id="title_th" name="title_th" class="form-control" placeholder="Type Name TH">
+                                    <input type="text" id="title_th" name="title_th" class="form-control" placeholder="Status Name TH">
                                     <small id="txtErrtitle_th" style="color:red;display:none"></small>
                                 </div>
                             </div>
@@ -107,8 +107,9 @@
                 </div>
             </div>
         </div>
-        <?php include_once "../../assets/includes/footer.html";?>
+        <?php include_once "../assets/includes/footer.html";?>
         
     </body>
 </html>
-<script src="/js/project-type.js"></script>
+<script src="../js/project-status.js"></script>
+
