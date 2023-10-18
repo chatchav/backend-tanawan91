@@ -29,16 +29,16 @@ switch ($method) {
             $stmt = $db->query("SELECT * FROM `homeslider` WHERE status = 'A'");
             $homeSlider = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $db->query("SELECT a.* FROM `home_about` h INNER JOIN about a ON a.aboutId = h.aboutId WHERE h.status = 'A'");
+            $stmt = $db->query("SELECT a.* FROM `home_about` h INNER JOIN about_th a ON a.aboutId = h.aboutId WHERE h.status = 'A'");
             $homeAbout = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $db->query("SELECT * FROM services WHERE status = 'A'");
+            $stmt = $db->query("SELECT * FROM services_th WHERE status = 'A'");
             $homeService = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $db->query("SELECT p.* FROM `home_projects` h INNER JOIN projects p ON p.projectId = h.projectId WHERE h.status = 'A'");
+            $stmt = $db->query("SELECT p.* FROM `home_projects` h INNER JOIN projects_th p ON p.projectId = h.projectId WHERE h.status = 'A'");
             $homeProject = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $db->query("SELECT * FROM publications WHERE status = 'A' ORDER BY publicId DESC LIMIT 8");
+            $stmt = $db->query("SELECT * FROM publications_th WHERE status = 'A' ORDER BY publicId DESC LIMIT 8");
             $homeArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $stmt = $db->query("SELECT * FROM contact");
