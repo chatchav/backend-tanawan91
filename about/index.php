@@ -159,4 +159,4 @@
         
     </body>
 </html>
-<script src="js/about.js"></script>
+<script src="/js/about.js"></script>

@@ -244,4 +244,4 @@
         
     </body>
 </html>
-<script src="js/projects.js"></script>
+<script src="/js/projects.js"></script>

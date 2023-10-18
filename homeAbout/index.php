@@ -122,4 +122,4 @@
         <?php include_once "../assets/includes/footer.html";?>
     </body>
 </html>
-<script src="js/home-about.js"></script>
+<script src="/js/home-about.js"></script>

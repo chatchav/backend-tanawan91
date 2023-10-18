@@ -34,12 +34,21 @@ switch ($method) {
         } elseif (end($urlParts)) {
             $serviceId = end($urlParts);
 
-            $stmt = $db->prepare("SELECT * FROM projects WHERE status = 'A' AND urlFriendly = ?");
+            $stmt = $db->prepare("SELECT p.*, t.typeName, s.statusName
+            FROM projects p
+            INNER JOIN setting_project_type t ON t.typeId = p.typeId
+            INNER JOIN setting_project_status s ON s.statusId = p.projectStatusId
+            WHERE p.status = 'A' AND p.urlFriendly = ?");
             $stmt->execute([$serviceId]);
             $service = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            $stmt = $db->prepare(
+                "SELECT image FROM `project_albums`
+                WHERE projectId = (SELECT projectId FROM `projects` WHERE status ='A' AND urlFriendly = ? )");
+            $stmt->execute([$serviceId]);
+            $albums = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if ($service) {
-                $response = $service;
+                $response = ["data"=>$service,"albums"=>$albums];
             } else {
                 http_response_code(404); 
                 $response = ["error" => "Id not found"];
