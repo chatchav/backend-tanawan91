@@ -24,7 +24,7 @@ switch ($method) {
         
         $urlParts = array_values(array_filter($urlParts));
 
-        if (end($urlParts) === 'homes') {
+        if (end($urlParts) === 'homes-th') {
 
             $stmt = $db->query("SELECT * FROM `homeslider` WHERE status = 'A'");
             $homeSlider = $stmt->fetchAll(PDO::FETCH_ASSOC);
