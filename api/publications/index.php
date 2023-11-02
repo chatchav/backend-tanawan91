@@ -31,7 +31,7 @@ switch ($method) {
         } elseif (end($urlParts)) {
             $serviceId = end($urlParts);
 
-            $stmt = $db->prepare("SELECT * FROM publications WHERE urlFriendly = ?");
+            $stmt = $db->prepare("SELECT * FROM publications WHERE status = 'A' AND urlFriendly = ?");
             $stmt->execute([$serviceId]);
             $service = $stmt->fetch(PDO::FETCH_ASSOC);
 

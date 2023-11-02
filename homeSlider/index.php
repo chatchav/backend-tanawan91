@@ -108,4 +108,4 @@
         <?php include_once "../assets/includes/footer.html";?>
     </body>
 </html>
-<script src="js/home-slider.js"></script>
+<script src="/js/home-slider.js"></script>

@@ -2,11 +2,6 @@
 $( document ).ready(function() {
     ClassicEditor
         .create(document.querySelector("#desc"), {
-            toolbar: [
-                'selectAll', 'undo', 'redo', 'bold', 'italic', 'blockQuote', 'link', 'ckfinder', 'uploadImage',
-                'imageUpload', 'heading', 'imageTextAlternative', 'toggleImageCaption', 'Source',
-                'indent', 'outdent', 'numberedList', 'bulletedList', 'mediaEmbed', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells'
-            ],
             height:'500'
         })
         .then(editor => {
