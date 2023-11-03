@@ -49,16 +49,40 @@ switch ($method) {
 
         case 'POST':
             $data = json_decode(file_get_contents('php://input'), true);
-            if (!empty($data['name'])) {
+            if (!empty($data['name']) && !empty($data['email']) && !empty($data['message'])) {
                 $name = $data['name'];
-    
+                $email = $data['email'];
+                $phone = $data['phone'] ?? ''; // Using null coalescing operator for optional data
+                $subject = $data['subject'] ?? 'No subject'; // Default subject if not provided
+                $message = $data['message'];
+        
                 // Insert service into the database
-                $stmt = $db->prepare("INSERT INTO contact (name) VALUES (?)");
-                $stmt->execute([$name]);
-    
-                $response = ["message" => "Service created successfully"];
+                $stmt = $db->prepare("INSERT INTO contact_form (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$name, $email, $phone, $subject, $message]);
+        
+                $stmt3 = $db->query("SELECT * FROM setting_mail LIMIT 1");
+                $emailSettings = $stmt3->fetch(PDO::FETCH_ASSOC);
+                // Send email to admin
+                $adminEmail = $emailSettings['email']; // Replace with the admin's email address
+                $headers = "From: " . $email . "\r\n";
+                $headers .= "Reply-To: " . $email . "\r\n";
+                $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        
+                $emailBody = "You have received a new contact message:\n\n";
+                $emailBody .= "Name: " . $name . "\n";
+                $emailBody .= "Email: " . $email . "\n";
+                $emailBody .= "Phone: " . $phone . "\n";
+                $emailBody .= "Subject: " . $subject . "\n";
+                $emailBody .= "Message:\n" . $message . "\n";
+        
+                // Use mail() function to send the email
+                if(mail($adminEmail, "New Contact Form Submission", $emailBody, $headers)) {
+                    $response = ["message" => "Service created and email sent successfully"];
+                } else {
+                    $response = ["error" => "Service created but email failed to send"];
+                }
             } else {
-                $response = ["error" => "Name is required for creating a service"];
+                $response = ["error" => "Name, email, and message are required for creating a service"];
             }
             break;
     

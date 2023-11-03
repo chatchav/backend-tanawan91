@@ -1,14 +1,17 @@
 
 $( document ).ready(function() {
     ClassicEditor
-        .create(document.querySelector("#desc"), {
-            height:'500'
+        .create(document.querySelector('#desc'), {
+            simpleUpload: {
+                uploadUrl: '../upload-ck.php',
+                withCredentials: false,
+              }
         })
         .then(editor => {
-            console.log(Array.from(editor.ui.componentFactory.names()).join(', '));
+            console.log('Editor was initialized', editor);
         })
         .catch(error => {
-            console.error(error);
+            console.error('There was a problem initializing the editor.', error);
         });
 
     $( "#frm-data" ).on( "submit", function( event ) {
