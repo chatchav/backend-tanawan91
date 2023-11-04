@@ -26,16 +26,16 @@ switch ($method) {
 
         if (end($urlParts) === 'homes') {
 
-            $stmt = $db->query("SELECT * FROM `homeslider` WHERE status = 'A'");
+            $stmt = $db->query("SELECT * FROM `homeslider` WHERE status = 'A' order by seq asc");
             $homeSlider = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $db->query("SELECT a.* FROM `home_about` h INNER JOIN about a ON a.aboutId = h.aboutId WHERE h.status = 'A'");
+            $stmt = $db->query("SELECT a.* FROM `home_about` h INNER JOIN about a ON a.aboutId = h.aboutId WHERE h.status = 'A' order by seq asc");
             $homeAbout = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $db->query("SELECT * FROM services WHERE status = 'A'");
+            $stmt = $db->query("SELECT * FROM services WHERE status = 'A' order by seq asc");
             $homeService = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $db->query("SELECT p.* FROM `home_projects` h INNER JOIN projects p ON p.projectId = h.projectId WHERE h.status = 'A'");
+            $stmt = $db->query("SELECT p.* FROM `home_projects` h INNER JOIN projects p ON p.projectId = h.projectId WHERE h.status = 'A' order by seq asc");
             $homeProject = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $stmt = $db->query("SELECT * FROM publications WHERE status = 'A' ORDER BY publicId DESC LIMIT 8");

@@ -15,7 +15,13 @@
         } else {
             return "Error: " . $query . "<br>" . mysqli_error($con);
         }
-        
+    }
+
+    function getSeq($tableName){
+        global $con;
+        $result = mysqli_query($con, "SELECT MAX(seq+1) as seq FROM ".$tableName."");
+        $row = mysqli_fetch_assoc($result);
+        return $row["seq"];
     }
 
     function GUID(){

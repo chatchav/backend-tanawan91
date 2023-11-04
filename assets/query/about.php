@@ -30,7 +30,7 @@
 
     switch ($flag) {
         case "add":
-            
+            $seq = getSeq('about');
             sql_query("
                 insert into about".$lang."(
                     image, 
@@ -39,7 +39,8 @@
                     metaKeyword, 
                     description, 
                     status,
-                    createDate
+                    createDate,
+                    seq
                 )values(
                     '".$imgName."', 
                     '".$title."', 
@@ -47,7 +48,8 @@
                     '".$keyword."',
                     '".$desc."',
                     'A',
-                    NOW()
+                    NOW(),
+                    '".$seq."'
                 )
             ");
 
@@ -60,7 +62,8 @@
                         metaKeyword, 
                         description, 
                         status,
-                        createDate
+                        createDate,
+                        seq
                     )values(
                         '".$imgName."', 
                         '".$title."', 
@@ -68,7 +71,8 @@
                         '".$keyword."',
                         '".$desc."',
                         'A',
-                        NOW()
+                        NOW(),
+                        '".$seq."'
                     )
                 ");
             }
@@ -106,6 +110,60 @@
                 set status = 'D'
                 where aboutId = '".$id."'
             ");
+            echo "Success";
+          break;
+          case "sortup":
+            $id = $_POST["id"];
+            $res = sql_query("
+                select seq, DownID, DownSorterIndex, UpID, UpSorterIndex 
+                from( 
+                    SELECT aboutId , seq, 
+                        lead(aboutId) over(order by seq asc) DownID, 
+                        lag(aboutId) over(order by seq asc) UpID, 
+                        lead(seq) over(order by seq asc) DownSorterIndex, 
+                        lag(seq) over(order by seq asc) UpSorterIndex 
+                    FROM about 
+                    where Status = 'A' 
+                ) a 
+                where aboutId = '".$id."' 
+            ");
+            while ($row = mysqli_fetch_row($res)) {
+                $upSeq = $row[4];
+                $upId = $row[3];
+                $seq = $row[0];
+                $res1 = sql_query("update about set seq = '".$upSeq."' where aboutId = '".$id."'");
+                $res2 = sql_query("update about set seq = '".$seq."' where aboutId = '".$upId."'");
+
+                $res1 = sql_query("update about_th set seq = '".$upSeq."' where aboutId = '".$id."'");
+                $res2 = sql_query("update about_th set seq = '".$seq."' where aboutId = '".$upId."'");
+            }
+            echo "Success";
+        break;
+        case "sortdown":
+            $id = $_POST["id"];
+            $res = sql_query("
+                select seq, DownID, DownSorterIndex, UpID, UpSorterIndex 
+                from( 
+                    SELECT aboutId , seq, 
+                        lead(aboutId) over(order by seq asc) DownID, 
+                        lag(aboutId) over(order by seq asc) UpID, 
+                        lead(seq) over(order by seq asc) DownSorterIndex, 
+                        lag(seq) over(order by seq asc) UpSorterIndex 
+                    FROM about 
+                    where Status = 'A'
+                ) a 
+                where aboutId = '".$id."' 
+            ");
+            while ($row = mysqli_fetch_row($res)) {
+                $downSeq = $row[2];
+                $downId = $row[1];
+                $seq = $row[0];
+                $res1 = sql_query("update about set seq = '".$downSeq."' where aboutId = '".$id."'");
+                $res2 = sql_query("update about set seq = '".$seq."' where aboutId = '".$downId."'");
+
+                $res1 = sql_query("update about_th set seq = '".$downSeq."' where aboutId = '".$id."'");
+                $res2 = sql_query("update about_th set seq = '".$seq."' where aboutId = '".$downId."'");
+            }
             echo "Success";
           break;
         default:

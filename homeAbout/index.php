@@ -39,14 +39,24 @@
                                         <th>Title</th>
                                         <th>Create Date</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                         global $con;
-                                        $result = mysqli_query($con, "SELECT h.aboutId, a.image, a.title, h.createDate FROM `home_about` h INNER JOIN about a ON a.aboutId = h.aboutId WHERE h.status = 'A' order by h.createDate desc");
-                                        
+                                        $result = mysqli_query($con, "SELECT h.aboutId, a.image, a.title, h.createDate FROM `home_about` h INNER JOIN about a ON a.aboutId = h.aboutId WHERE h.status = 'A' order by h.seq asc");
+                                        $i = 0;
+                                        $n_rows = mysqli_num_rows($result);
                                         while ($row = mysqli_fetch_row($result)) {
+                                            $disup = "";
+                                            $disdown = "";
+                                            if ($i == 0) {
+                                                $disup = "disabled";
+                                            }
+                                            if($i == ($n_rows-1)){
+                                                $disdown = "disabled";
+                                            }
                                     ?>
                                         <tr>
                                             <td>
@@ -55,12 +65,17 @@
                                             <td><?php echo $row[2];?></td>
                                             <td><?php echo $row[3];?></td>
                                             <td>
+                                                <button type="button" <?php echo  $disup;?> class="btn btn-light btn-sort m-1" data-sort="up" data-id="<?php echo $row[0];?>"><i class="fa-solid fa-arrow-up"></i></button>
+                                                <button type="button" <?php echo  $disdown;?> class="btn btn-light btn-sort m-1" data-sort="down" data-id="<?php echo $row[0];?>"><i class="fa-solid fa-arrow-down"></i></button>
+                                            </td>
+                                            <td>
                                                 <button type="button" class="btn btn-warning btn-edit-data m-1" data-id="<?php echo $row[0];?>" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-regular fa-pen-to-square"></i></button>
                                                 <button type="button" class="btn btn-danger btn-del-data m-1" data-id="<?php echo $row[0];?>"><i class="fa-regular fa-trash-can"></i></button>
                                             </td>
                                         </tr>
                                     
                                     <?php
+                                        $i++;
                                         }
                                     ?>  
                                 </tbody>

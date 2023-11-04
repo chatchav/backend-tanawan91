@@ -2,11 +2,16 @@
 <html lang="en">
 
     <?php 
+     @session_start(); 
         include_once "../assets/includes/header.html";
         include_once "../assets/includes/connect-db.php";
 
         global $con;
-        $result = mysqli_query($con,"select contactId, image, mapURL, description from contact");
+        $lang ="";
+        if($_SESSION["lang"] != "EN"){
+            $lang = "_th";
+        }
+        $result = mysqli_query($con,"select contactId, image, mapURL, description from contact".$lang."");
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
         $display = !empty($row["image"])?"flex":"none";

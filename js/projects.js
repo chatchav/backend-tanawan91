@@ -10,6 +10,22 @@ $( document ).ready(function() {
     }
     var myEditor;
 
+    
+
+
+    $("#form-albums").sortable({
+        update: function (event, ui) {
+            console.log(event, ui);
+            $("#form-albums .col-sm-4").each(function (i, o) {
+                $(this).find(".btn-delete-image").attr("data-seq", i);
+                $(this).find(".img-fluid").attr("data-img-ref", i);
+                $(this).find(".btn-choose-image").attr("data-target", "#new-image-"+i);
+                $(this).find("input[type='file']").attr({"name": "albums["+i+"]","data-img-ref":i,"id":"new-image-"+i});
+                $(this).find(".old-album").attr({"name": "albumOld["+i+"]"});
+            })
+        }
+    })
+
     $('#add-service').on("click",function(){
         setFlag("add");
         $('#img-cover').hide();
@@ -118,6 +134,7 @@ $( document ).ready(function() {
         setFlag("update");
         const id = $(this).attr('data-id');
         $('#id').val(id);
+        $("#form-albums").html("");
         $.ajax({
             type:"POST",
             url:"../assets/query/projects.php",

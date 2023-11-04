@@ -16,6 +16,11 @@
         $imgName = uploagImg($_FILES["image"],$imgOld);
     }
 
+    $lang ="";
+    if($_SESSION["lang"] != "EN"){
+        $lang = "_th";
+    }
+
     
 
     switch ($flag) {
@@ -23,7 +28,7 @@
             $chk = chkDup("select contactId from contact");
             if( $chk > 0){
                 $res = sql_query("
-                    update contact
+                    update contact".$lang."
                     set 
                         image = '".$imgName."', 
                         mapURL = '".$mapurl."',
@@ -41,6 +46,18 @@
                         '".$desc."'
                     )
                 ");
+
+                $res = sql_query("
+                    insert into contact_th(
+                        image, 
+                        mapURL,
+                        description
+                    )values(
+                        '".$imgName."', 
+                        '".$mapurl."',
+                        '".$desc."'
+                    )
+                ");
             }
             
             echo "Success";
@@ -48,7 +65,7 @@
             break;
         case "edit":
             $id = $_POST["id"];
-            $data = getRowsData("select contactId, image, mapURL, description from contact");
+            $data = getRowsData("select contactId, image, mapURL, description from contact".$lang."");
             echo json_encode($data);
           break;
     }

@@ -11,7 +11,7 @@
         if($_SESSION["lang"] != "EN"){
             $lang = "_th";
         }
-        $result = mysqli_query($con, "select aboutId, image, title, description, CreateDate from about".$lang." where status = 'A'");
+        $result = mysqli_query($con, "select aboutId, image, title, description, CreateDate from about".$lang." where status = 'A' order by seq asc");
 
     ?>
     
@@ -46,13 +46,23 @@
                                                 <th>Title</th>
                                                 <th>Description</th>
                                                 <th>Create Date</th>
+                                                <th></th>
                                                 <th style="width:200px;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                           
+                                                $i = 0;
+                                                $n_rows = mysqli_num_rows($result);
                                                 while ($row = mysqli_fetch_row($result)) {
+                                                    $disup = "";
+                                                    $disdown = "";
+                                                    if ($i == 0) {
+                                                        $disup = "disabled";
+                                                    }
+                                                    if($i == ($n_rows-1)){
+                                                        $disdown = "disabled";
+                                                    }
                                             ?>
                                                 <tr>
                                                     <td>
@@ -61,6 +71,10 @@
                                                     <td><?php echo $row[2];?></td>
                                                     <td><?php echo $row[3];?></td>
                                                     <td><?php echo $row[4];?></td>
+                                                    <td>
+                                                        <button type="button" <?php echo  $disup;?> class="btn btn-light btn-sort m-1" data-sort="up" data-id="<?php echo $row[0];?>"><i class="fa-solid fa-arrow-up"></i></button>
+                                                        <button type="button" <?php echo  $disdown;?> class="btn btn-light btn-sort m-1" data-sort="down" data-id="<?php echo $row[0];?>"><i class="fa-solid fa-arrow-down"></i></button>
+                                                    </td>
                                                     <td width="200px">
                                                         <button type="button" class="btn btn-warning btn-edit-data m-1" data-id="<?php echo $row[0];?>" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-regular fa-pen-to-square"></i></button>
                                                         <button type="button" class="btn btn-danger btn-del-data m-1" data-id="<?php echo $row[0];?>"><i class="fa-regular fa-trash-can"></i></button>
@@ -68,6 +82,7 @@
                                                 </tr>
                                             
                                             <?php
+                                                $i++;
                                                 }
                                             ?>
                                         </tbody>
