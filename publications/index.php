@@ -146,6 +146,7 @@
                 </div>
             </div>
         </div>
+        
         <?php include_once "../assets/includes/footer.html";?>
         
     </body>
