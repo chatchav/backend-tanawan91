@@ -3,6 +3,21 @@ $( document ).ready(function() {
     const href = window.location.href;
     const tab = href.split('#');
     const nevTab = $('ul.nav-tabs');
+    const id = $('#id').val() | "";
+    const ele = $('#type');
+    console.log(ele,"e");
+    if(ele != ""){
+        if(tab.length == 2){
+                ele.val(tab[1]);
+        }else{
+            ele.val("design");
+        }
+    }
+        
+    if(id != ""){
+        getDataEdit(id);
+    }
+
     if(tab.length == 2){
         setActive(tab[1]);
     }else{
@@ -11,25 +26,32 @@ $( document ).ready(function() {
 
     $(document)
         .on("click", ".nav-item", activeTap)
-        .on("click","#add-service",setType)
+        .on("click","#add-service",create)
 
-    function setType(){
-        setFlag("add");
+    function create(){
+        // setFlag("add");
         const h = window.location.href;
         const t = h.split('#');
-        const ele = $('#type');
+        let type = "design";
         if(t.length == 2){
-            //if(t[1] == "build"){
-                ele.val(t[1]);
-            // }else{
-            //     ele.val("build");
-            // }
-        }else{
-            ele.val("design");
+            type = t[1];
         }
-        $('#title').val('');
-        $('#desc').text('');
-        console.log(t);
+        console.log(h,t);
+        window.location.href = "/services/create.php#"+type;
+        
+        // const ele = $('#type');
+        // if(t.length == 2){
+        //     //if(t[1] == "build"){
+        //         ele.val(t[1]);
+        //     // }else{
+        //     //     ele.val("build");
+        //     // }
+        // }else{
+        //     ele.val("design");
+        // }
+        // $('#title').val('');
+        // $('#desc').text('');
+        // console.log(t);
     }
 
     function activeTap (){
@@ -105,10 +127,10 @@ $( document ).ready(function() {
         });
     })
 
-    $('.btn-edit-data').on('click',function(){
+    function getDataEdit(id){
         setFlag("update");
-        const id = $(this).attr('data-id');
-        $('#id').val(id);
+        // const id = $(this).attr('data-id');
+        // $('#id').val(id);
         $.ajax({
             type:"POST",
             url:"../assets/query/services.php",
@@ -121,7 +143,7 @@ $( document ).ready(function() {
                 $('#desc').text(data[3]);
             }
         });
-    });
+    };
 
     $('.btn-del-data').on('click',function(){
         const id = $(this).attr('data-id');
@@ -190,14 +212,14 @@ $( document ).ready(function() {
                     console.log(res);
                     const eleErr = $('#txtErrtitle');
                     if(res == "Success"){
-                        $('#exampleModal').modal('toggle');
+                       // $('#exampleModal').modal('toggle');
                         Swal.fire({
                             icon: 'success',
                             title: 'saved',
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            window.location.reload();
+                            window.location.href = "/services";
                         })
                     }else{
                         eleErr.show();

@@ -75,9 +75,12 @@
 }
 
 .select2-container{
-    z-index:100000;
+    z-index:1000;
 }
 
+/* .ck.ck-balloon-panel{
+	z-index: 100000 !important;
+} */
 
 .select2-container .select2-selection--single {
     height: auto !important;

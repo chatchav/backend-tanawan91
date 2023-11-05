@@ -1,6 +1,10 @@
 
 $( document ).ready(function() {
     var myEditor;
+    const id = $('#id').val() | "";
+    if(id != ""){
+        getDataEdit(id);
+    }
     // ClassicEditor
     //     .create(document.querySelector("#desc"), {
     //         extraPlugins:[getPlugin],
@@ -99,36 +103,29 @@ $( document ).ready(function() {
             .then(editor => {
                 myEditor = editor;
                 window.editor = editor;
+                
             })
             .catch(error => {
                 console.error(error);
             });
     });
 
-
-    function getPlugin(editor){
-        return editor.plugins.get('ImageResize')
-        console.log(editor);
-    } 
-    
     $('#add-service').on("click",function(){
-        setFlag("add");
-        $('#img-cover').hide();
-        $('#img-temp').attr('src','');
-        $('#img-old').val('');
+        window.location.href = "/publications/create.php";
+        // setFlag("add");
+        // $('#img-cover').hide();
+        // $('#img-temp').attr('src','');
+        // $('#img-old').val('');
         
-        $('#title').val('');
-        $('#keyword').val('');
-        $('#shortdesc').text('');
-        myEditor.data.set('');
+        // $('#title').val('');
+        // $('#keyword').val('');
+        // $('#shortdesc').text('');
+        // myEditor.data.set('');
     })
 
-
-
-    $('.btn-edit-data').on('click',function(){
+    function getDataEdit(id){
         setFlag("update");
-        const id = $(this).attr('data-id');
-        $('#id').val(id);
+        
         $.ajax({
             type:"POST",
             url:"../assets/query/publications.php",
@@ -151,7 +148,7 @@ $( document ).ready(function() {
                 // $('#title_th').val(data[2]);
             }
         });
-    });
+    };
 
     $('.btn-del-data').on('click',function(){
         const id = $(this).attr('data-id');
@@ -230,7 +227,7 @@ $( document ).ready(function() {
                             showConfirmButton: false,
                             timer: 1500
                             }).then(() => {
-                            window.location.reload();
+                            window.location.href = "/publications";
                         })
                     }else{
                         eleErr.show();

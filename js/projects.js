@@ -3,6 +3,10 @@ $( document ).ready(function() {
     const href = window.location.href;
     const tab = href.split('#');
     const nevTab = $('ul.nav-tabs');
+    const id = $('#id').val() | "";
+    if(id != ""){
+        getDataEdit(id);
+    }
     if(tab.length == 2){
         setActive(tab[1]);
     }else{
@@ -11,7 +15,9 @@ $( document ).ready(function() {
     var myEditor;
 
     
-
+    $('.js-example-basic-single').select2({
+        // dropdownParent: $('#exampleModal')
+    });
 
     $("#form-albums").sortable({
         update: function (event, ui) {
@@ -27,26 +33,27 @@ $( document ).ready(function() {
     })
 
     $('#add-service').on("click",function(){
-        setFlag("add");
-        $('#img-cover').hide();
-        $('#img-old').val("");
+        window.location.href = "/projects/create.php";
+        // setFlag("add");
+        // $('#img-cover').hide();
+        // $('#img-old').val("");
     
-        $('#title').val("");
-        $('#keyword').val("");
-        $('#desc').text("");
-        myEditor.data.set("");
+        // $('#title').val("");
+        // $('#keyword').val("");
+        // $('#desc').text("");
+        // myEditor.data.set("");
 
-        $('#metadesc').text("");
-        $('#type').val("");
-        $('#year').val("");
-        $('#location').val("");
-        $('#status').val("");
-        $('#area').val("");
-        $('#client').val("");
-        $('#architect').val("");
-        $('#contractor').val("");
+        // $('#metadesc').text("");
+        // $('#type').val("");
+        // $('#year').val("");
+        // $('#location').val("");
+        // $('#status').val("");
+        // $('#area').val("");
+        // $('#client').val("");
+        // $('#architect').val("");
+        // $('#contractor').val("");
 
-        $("#form-albums").html("")
+        // $("#form-albums").html("")
     })
     
     class MyUploadAdapter {
@@ -200,10 +207,10 @@ $( document ).ready(function() {
         $('#flagAction').val(action);
     }
 
-    $('.btn-edit-data').on('click',function(){
+   function getDataEdit(id){
         setFlag("update");
-        const id = $(this).attr('data-id');
-        $('#id').val(id);
+        // const id = $(this).attr('data-id');
+        // $('#id').val(id);
         $("#form-albums").html("");
         $.ajax({
             type:"POST",
@@ -258,7 +265,7 @@ $( document ).ready(function() {
                 $("#form-albums").append(content)
             }
         });
-    });
+    };
 
     $( "#frm-data" ).on( "submit", function( event ) {
         event.preventDefault();
@@ -297,8 +304,8 @@ $( document ).ready(function() {
                             title: 'saved',
                             showConfirmButton: false,
                             timer: 1500
-                            }).then(() => {
-                            window.location.reload();
+                        }).then(() => {
+                            window.location.href = "/projects";
                         })
                     }else{
                         eleErr.show();

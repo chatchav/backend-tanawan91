@@ -24,7 +24,7 @@
                                 <small style="color:#e26330">Publications</small>
                             </div>
                             <div class="col-sm-2 div-btn">
-                                <button type="button" id="add-service" class="mt-4 btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add </button>
+                                <button type="button" id="add-service" class="mt-4 btn btn-primary" >Add </button>
                             </div>
                         </div>
                         
@@ -59,7 +59,7 @@
                                                     <td><?php echo $row[2];?></td>
                                                     <td><?php echo $row[3];?></td>
                                                     <td>
-                                                        <button type="button" class="btn btn-warning btn-edit-data m-1" data-id="<?php echo $row[0];?>" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-regular fa-pen-to-square"></i></button>
+                                                        <a href="/publications/edit.php?id=<?php echo $row[0];?>" type="button" class="btn btn-warning btn-edit-data m-1" data-id="<?php echo $row[0];?>" ><i class="fa-regular fa-pen-to-square"></i></a>
                                                         <button type="button" class="btn btn-danger btn-del-data m-1" data-id="<?php echo $row[0];?>"><i class="fa-regular fa-trash-can"></i></button>
                                                     </td>
                                                 </tr>

@@ -1,14 +1,19 @@
 $(document).ready(function(){
-    //getData();
-    $('#add-service').on("click",function(){
-        setFlag("add");
-        $('#img-cover').hide();
-        $('#img-temp').attr('src','');
-        $('#img-old').val('');
+    const id = $('#id').val() | "";
+    if(id != ""){
+        getDataEdit(id);
+    }
     
-        $('#title').val('');
-        $('#keyword').val('');
-        $('#desc').text('');
+    $('#add-service').on("click",function(){
+        window.location.href = "/about/create.php";
+        // setFlag("add");
+        // $('#img-cover').hide();
+        // $('#img-temp').attr('src','');
+        // $('#img-old').val('');
+    
+        // $('#title').val('');
+        // $('#keyword').val('');
+        // $('#desc').text('');
     })
 
     $('.btn-sort').on("click",function(){
@@ -57,10 +62,8 @@ $(document).ready(function(){
         });
     })
 
-    $('.btn-edit-data').on('click',function(){
+    function getDataEdit(id){
         setFlag("update");
-        const id = $(this).attr('data-id');
-        $('#id').val(id);
         $.ajax({
             type:"POST",
             url:"../assets/query/about.php",
@@ -80,7 +83,7 @@ $(document).ready(function(){
                 // $('#title_th').val(data[2]);
             }
         });
-    });
+    };
 
     $('.btn-del-data').on('click',function(){
         const id = $(this).attr('data-id');
@@ -160,7 +163,7 @@ $(document).ready(function(){
                             showConfirmButton: false,
                             timer: 1500
                           }).then(() => {
-                            window.location.reload();
+                            window.location.href = "/about";
                         })
                     }else{
                         eleErr.show();
