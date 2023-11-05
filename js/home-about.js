@@ -1,7 +1,10 @@
 
 $( document ).ready(function() {
     $('#add-service').on("click",function(){
-        setFlag("add")
+        setFlag("add");
+        $('#id').val('');
+        $('#aboutId').val('');
+        $('#aboutId').trigger('change');
     })
 
     $('.js-example-basic-single').select2({

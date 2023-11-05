@@ -1,7 +1,14 @@
 $(document).ready(function(){
     //getData();
     $('#add-service').on("click",function(){
-        setFlag("add")
+        setFlag("add");
+        $('#img-cover').hide();
+        $('#img-temp').attr('src','');
+        $('#img-old').val('');
+    
+        $('#title').val('');
+        $('#keyword').val('');
+        $('#desc').text('');
     })
 
     $('.btn-sort').on("click",function(){

@@ -1,7 +1,8 @@
 $(document).ready(function(){
     //getData();
     $('#add-service').on("click",function(){
-        setFlag("add")
+        setFlag("add");
+        $('#title').val('');
     })
 
     $('.btn-edit-data').on('click',function(){

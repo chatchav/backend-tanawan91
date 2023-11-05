@@ -27,6 +27,8 @@ $( document ).ready(function() {
         }else{
             ele.val("design");
         }
+        $('#title').val('');
+        $('#desc').text('');
         console.log(t);
     }
 

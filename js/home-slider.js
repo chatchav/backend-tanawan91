@@ -3,7 +3,10 @@ $( document ).ready(function() {
     
 
     $('#add-service').on("click",function(){
-        setFlag("add")
+        setFlag("add");
+        $('#img-cover').hide();
+        $('#img-temp').attr('src','');
+        $('#img-old').val('');
     });
 
     $('.btn-sort').on("click",function(){
