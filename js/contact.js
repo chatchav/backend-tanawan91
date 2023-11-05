@@ -2,10 +2,10 @@
 $( document ).ready(function() {
     ClassicEditor
         .create(document.querySelector('#desc'), {
-            simpleUpload: {
-                uploadUrl: '../upload-ck.php',
-                withCredentials: false,
-              }
+            ckfinder:
+            {
+             uploadUrl:'../fileupload.php'
+            }
         })
         .then(editor => {
             console.log('Editor was initialized', editor);

@@ -3,7 +3,10 @@ $( document ).ready(function() {
     var myEditor;
     ClassicEditor
         .create(document.querySelector("#desc"), {
-            height:'500'
+            ckfinder:
+            {
+             uploadUrl:'../fileupload.php'
+            }
         })
         .then(editor => {
             myEditor = editor;
