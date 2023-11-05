@@ -17,7 +17,15 @@ $( document ).ready(function() {
         });
 
     $('#add-service').on("click",function(){
-        setFlag("add")
+        setFlag("add");
+        $('#img-cover').hide();
+        $('#img-temp').attr('src','');
+        $('#img-old').val('');
+        
+        $('#title').val('');
+        $('#keyword').val('');
+        $('#shortdesc').text('');
+        myEditor.data.set('');
     })
 
     $('.btn-edit-data').on('click',function(){

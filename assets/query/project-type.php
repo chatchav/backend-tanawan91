@@ -58,6 +58,54 @@
             ");
             echo "Success";
           break;
+        case "sortup":
+            $id = $_POST["id"];
+            $res = sql_query("
+                select seq, DownID, DownSorterIndex, UpID, UpSorterIndex 
+                from( 
+                    SELECT typeId , seq, 
+                        lead(typeId ) over(order by seq asc) DownID, 
+                        lag(typeId ) over(order by seq asc) UpID, 
+                        lead(seq) over(order by seq asc) DownSorterIndex, 
+                        lag(seq) over(order by seq asc) UpSorterIndex 
+                    FROM setting_project_type 
+                    where status = 'A' 
+                ) a 
+                where typeId = '".$id."' 
+            ");
+            while ($row = mysqli_fetch_row($res)) {
+                $upSeq = $row[4];
+                $upId = $row[3];
+                $seq = $row[0];
+                $res1 = sql_query("update setting_project_type set seq = '".$upSeq."' where typeId = '".$id."'");
+                $res2 = sql_query("update setting_project_type set seq = '".$seq."' where typeId = '".$upId."'");
+            }
+            echo "Success";
+        break;
+        case "sortdown":
+            $id = $_POST["id"];
+            $res = sql_query("
+                select seq, DownID, DownSorterIndex, UpID, UpSorterIndex 
+                from( 
+                    SELECT typeId , seq, 
+                        lead(typeId) over(order by seq asc) DownID, 
+                        lag(typeId) over(order by seq asc) UpID, 
+                        lead(seq) over(order by seq asc) DownSorterIndex, 
+                        lag(seq) over(order by seq asc) UpSorterIndex 
+                    FROM setting_project_type 
+                    where Status = 'A' 
+                ) a 
+                where typeId = '".$id."' 
+            ");
+            while ($row = mysqli_fetch_row($res)) {
+                $downSeq = $row[2];
+                $downId = $row[1];
+                $seq = $row[0];
+                $res1 = sql_query("update setting_project_type set seq = '".$downSeq."' where typeId = '".$id."'");
+                $res2 = sql_query("update setting_project_type set seq = '".$seq."' where typeId = '".$downId."'");
+            }
+            echo "Success";
+          break;
         default:
             $data = getRowsData("select typeId, typeName, CreateDate from setting_project_type where status = 'A'");
             echo json_encode($data);

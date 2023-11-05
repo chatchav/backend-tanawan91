@@ -26,7 +26,7 @@ switch ($method) {
 
         if (end($urlParts) === 'about') {
 
-            $stmt = $db->query("SELECT * FROM about WHERE status = 'A'");
+            $stmt = $db->query("SELECT * FROM about WHERE status = 'A' order by seq asc");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } elseif (is_numeric(end($urlParts))) {
             $serviceId = (int)end($urlParts);
