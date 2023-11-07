@@ -7,7 +7,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 $response = [];
 
 $allowedOrigins = [
-    '*',   
+    'http://localhost',  
+    'https://tanawan91.vercel.app' 
 ];
 
 $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
@@ -15,8 +16,11 @@ if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: $origin");
 }
 
-header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+     header("Access-Control-Allow-Headers: Content-Type");
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+    exit; 
+}
 
 switch ($method) {
     case 'GET':

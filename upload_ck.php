@@ -1,7 +1,7 @@
 <?php
 // Adjust the following lines to match your own environment:
 $uploadDir = 'upload/';
-$publicPath = 'http://localhost/2023/10/backend-tanawan91/';
+$publicPath = 'https://tanawan91.ddlcoding.com/upload/';
 $response = [];
 
 if ($_FILES['upload']) {

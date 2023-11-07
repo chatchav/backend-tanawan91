@@ -11,7 +11,7 @@ if($file_extension=='jpg' || $file_extension=='jpeg'|| $file_extension=='png')
     if(move_uploaded_file($_FILES['upload']['tmp_name'],$file_path))
     {
         $data['file']=$file_name;
-        $data['url']= "../".$file_path;
+        $data['url']= "https://tanawan91.ddlcoding.com/".$file_path;
         $data['uploaded']=1;
     }
     else{
