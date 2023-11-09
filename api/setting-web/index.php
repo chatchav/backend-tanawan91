@@ -24,9 +24,9 @@ switch ($method) {
         
         $urlParts = array_values(array_filter($urlParts));
 
-        if (end($urlParts) === 'service') {
+        if (end($urlParts) === 'setting-web') {
 
-            $stmt = $db->query("SELECT * FROM services WHERE status = 'A' order by seq asc");
+            $stmt = $db->query("SELECT * FROM setting_website");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } elseif (is_numeric(end($urlParts))) {
             $serviceId = (int)end($urlParts);

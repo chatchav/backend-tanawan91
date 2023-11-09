@@ -26,7 +26,7 @@ switch ($method) {
 
         if (end($urlParts) === 'publications') {
 
-            $stmt = $db->query("SELECT * FROM publications WHERE status = 'A'");
+            $stmt = $db->query("SELECT * FROM publications WHERE status = 'A' ORDER BY seq desc ");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } elseif (end($urlParts)) {
             $serviceId = end($urlParts);

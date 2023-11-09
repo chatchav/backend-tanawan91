@@ -26,7 +26,7 @@ switch ($method) {
 
         if (end($urlParts) === 'project-type-th') {
 
-            $stmt = $db->query("SELECT typeId,typeNameTH as typeName FROM `setting_project_type` WHERE status = 'A'");
+            $stmt = $db->query("SELECT typeId,typeNameTH as typeName FROM `setting_project_type` WHERE status = 'A' order by seq asc");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
             http_response_code(400); 

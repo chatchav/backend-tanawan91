@@ -6,7 +6,7 @@
         include_once "../assets/includes/connect-db.php";
 
         global $con;
-        $resAbout = mysqli_query($con, "select aboutId, title from about where status = 'A' order by createDate desc");
+        $resAbout = mysqli_query($con, "select aboutId, title from about where status = 'A' order by seq asc");
     ?>
     
     <body class="sb-nav-fixed">

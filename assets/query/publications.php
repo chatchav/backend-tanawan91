@@ -28,6 +28,7 @@
 
     switch ($flag) {
         case "add":
+            $seq = getSeq('publications');
             $res = sql_query("
                 insert into publications".$lang."(
                     image, 
@@ -37,7 +38,8 @@
                     description, 
                     shortDescription, 
                     status,
-                    createDate
+                    createDate,
+                    seq
                 )values(
                     '".$imgName."', 
                     '".$title."', 
@@ -46,7 +48,8 @@
                     '".$desc."',
                     '".$shortdesc."',
                     'A',
-                    NOW()
+                    NOW(),
+                    '".$seq."'
                 )
             ");
 
@@ -60,7 +63,8 @@
                     description, 
                     shortDescription, 
                     status,
-                    createDate
+                    createDate,
+                    seq
                 )values(
                     '".$imgName."', 
                     '".$title."', 
@@ -69,7 +73,8 @@
                     '".$desc."',
                     '".$shortdesc."',
                     'A',
-                    NOW()
+                    NOW(),
+                    '".$seq."'
                 )
                 ");
             }
@@ -110,6 +115,60 @@
                 set status = 'D'
                 where publicId = '".$id."'
             ");
+            echo "Success";
+          break;
+          case "sortup":
+            $id = $_POST["id"];
+            $res = sql_query("
+                select seq, DownID, DownSorterIndex, UpID, UpSorterIndex 
+                from( 
+                    SELECT publicId , seq, 
+                        lead(publicId ) over(order by seq desc) DownID, 
+                        lag(publicId ) over(order by seq desc) UpID, 
+                        lead(seq) over(order by seq desc) DownSorterIndex, 
+                        lag(seq) over(order by seq desc) UpSorterIndex 
+                    FROM publications 
+                    where Status = 'A' 
+                ) a 
+                where publicId = '".$id."' 
+            ");
+            while ($row = mysqli_fetch_row($res)) {
+                $upSeq = $row[4];
+                $upId = $row[3];
+                $seq = $row[0];
+                $res1 = sql_query("update publications set seq = '".$upSeq."' where publicId = '".$id."'");
+                $res2 = sql_query("update publications_th set seq = '".$seq."' where publicId = '".$upId."'");
+
+                $res1 = sql_query("update publications_th set seq = '".$upSeq."' where publicId = '".$id."'");
+                $res2 = sql_query("update publications_th set seq = '".$seq."' where publicId = '".$upId."'");
+            }
+            echo "Success";
+        break;
+        case "sortdown":
+            $id = $_POST["id"];
+            $res = sql_query("
+                select seq, DownID, DownSorterIndex, UpID, UpSorterIndex 
+                from( 
+                    SELECT publicId , seq, 
+                        lead(publicId ) over(order by seq desc) DownID, 
+                        lag(publicId ) over(order by seq desc) UpID, 
+                        lead(seq) over(order by seq desc) DownSorterIndex, 
+                        lag(seq) over(order by seq desc) UpSorterIndex 
+                    FROM publications 
+                    where Status = 'A' 
+                ) a 
+                where publicId = '".$id."' 
+            ");
+            while ($row = mysqli_fetch_row($res)) {
+                $downSeq = $row[2];
+                $downId = $row[1];
+                $seq = $row[0];
+                $res1 = sql_query("update publications set seq = '".$downSeq."' where publicId = '".$id."'");
+                $res2 = sql_query("update publications set seq = '".$seq."' where publicId = '".$downId."'");
+
+                $res1 = sql_query("update publications_th set seq = '".$downSeq."' where publicId = '".$id."'");
+                $res2 = sql_query("update publications_th set seq = '".$seq."' where publicId = '".$downId."'");
+            }
             echo "Success";
           break;
         default:

@@ -19,6 +19,52 @@ $( document ).ready(function() {
         // dropdownParent: $('#exampleModal')
     });
 
+    $('.btn-sort').on("click",function(){
+        const rows = $('#table > tbody').find("tr").length;
+        console.log(rows);
+        const e = $(this);
+        const sort = e.attr("data-sort");
+        const id = e.attr("data-id");
+
+        //console.log($(this).parent().parent(),$(this).attr("data-sort"),$(this).attr("data-id"));
+        var tr = e.parents("tr:first");
+        var index = tr.attr("data-index");
+        // var index = table.row(row).index();
+        $.ajax({
+            type:"POST",
+            url:"../assets/query/projects.php",
+            data:"flagAction=sort"+sort+"&id="+id,
+            async:false,
+            success: function(res){
+                console.log(res)
+                if(res == "Success"){
+                    if(sort == "down"){
+                        $("tr[data-index='"+(parseInt(index)+1)+"']").after(tr);
+                    }else{
+                        $("tr[data-index='"+(parseInt(index)-1)+"']").before(tr);
+                    }
+                }
+            }
+        });
+
+        let i = 0;
+        $.each($('#table > tbody').find("tr"),function(){
+            $(this).attr("data-index",i);
+            var btnup = $(this).find("button[data-sort='up']");
+            var btndown = $(this).find("button[data-sort='down']");
+            btnup.removeAttr("disabled");
+            btndown.removeAttr("disabled");
+            if(i == 0){
+                btnup.attr("disabled","disabled");
+            }
+            if(i == (rows-1)){
+                btndown.attr("disabled","disabled");
+            }
+            i++;
+            // console.log($(this));
+        });
+    })
+
     $("#form-albums").sortable({
         update: function (event, ui) {
             console.log(event, ui);
@@ -272,6 +318,17 @@ $( document ).ready(function() {
         const form = $( this );
         var formData = new FormData(this);
         let chkErr = "0"
+
+        Swal.fire({
+            title: 'Processing...',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              swal.showLoading();
+            }
+        });
+        
         form.find('input').each(function(i, o){
             const v = $(this).val();
             const eleId = $(this).attr('id');
@@ -314,6 +371,8 @@ $( document ).ready(function() {
                     }
                 }
             });
+        }else{
+            Swal.close();
         }
     });
 });

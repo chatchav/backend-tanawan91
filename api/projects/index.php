@@ -29,7 +29,7 @@ switch ($method) {
             $stmt = $db->query("SELECT p.*, t.typeName 
             FROM projects p
             INNER JOIN setting_project_type t ON t.typeId = p.typeId
-            WHERE p.status = 'A'");
+            WHERE p.status = 'A' ORDER BY seq DESC");
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } elseif (end($urlParts)) {
             $serviceId = end($urlParts);

@@ -87,6 +87,17 @@ $( document ).ready(function() {
         const form = $( this );
         var formData = new FormData(this);
         let chkErr = "0"
+
+        Swal.fire({
+            title: 'Processing...',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              swal.showLoading();
+            }
+        });
+
         form.find('input').each(function(i, o){
             const v = $(this).val();
             const eleId = $(this).attr('id');
@@ -130,6 +141,8 @@ $( document ).ready(function() {
                     }
                 }
             });
+        }else{
+            Swal.close();
         }
     });
 });

@@ -21,7 +21,7 @@ $(document).ready(function(){
     if(url != "/"){
         $.each( menu, function( key, value ) {
             var ele = $(value);
-            var href = ele.attr("href");
+            var href = ele.attr("href")+"/";
             ele.removeClass( "active" );
             if(href.search(url) != -1){
                 var id = ele.parent().parent().attr("id");

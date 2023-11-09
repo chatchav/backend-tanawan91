@@ -43,6 +43,7 @@
                                                 <th>Type</th>
                                                 <th>Create Date</th>
                                                 <th></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -52,9 +53,18 @@
                                                 if(@$_SESSION["lang"] != "EN"){
                                                     $lang = "_th";
                                                 }
-                                                $result = mysqli_query($con, "select projectId, image, title, t.typeName, p.CreateDate from projects".$lang." p inner join setting_project_type t on t.typeId = p.typeId where p.status = 'A' order by p.createDate desc");
-                                                
+                                                $result = mysqli_query($con, "select projectId, image, title, t.typeName, p.CreateDate from projects".$lang." p inner join setting_project_type t on t.typeId = p.typeId where p.status = 'A' order by p.seq desc");
+                                                $i = 0;
+                                                $n_rows = mysqli_num_rows($result);
                                                 while ($row = mysqli_fetch_row($result)) {
+                                                    $disup = "";
+                                                    $disdown = "";
+                                                    if ($i == 0) {
+                                                        $disup = "disabled";
+                                                    }
+                                                    if($i == ($n_rows-1)){
+                                                        $disdown = "disabled";
+                                                    }
                                             ?>
                                                 <tr>
                                                     <td>
@@ -64,12 +74,17 @@
                                                     <td><?php echo $row[3];?></td>
                                                     <td><?php echo $row[4];?></td>
                                                     <td>
+                                                        <button type="button" <?php echo  $disup;?> class="btn btn-light btn-sort m-1" data-sort="up" data-id="<?php echo $row[0];?>"><i class="fa-solid fa-arrow-up"></i></button>
+                                                        <button type="button" <?php echo  $disdown;?> class="btn btn-light btn-sort m-1" data-sort="down" data-id="<?php echo $row[0];?>"><i class="fa-solid fa-arrow-down"></i></button>
+                                                    </td>
+                                                    <td>
                                                         <a href="/projects/edit.php?id=<?php echo $row[0];?>" type="button" class="btn btn-warning btn-edit-data m-1" data-id="<?php echo $row[0];?>" ><i class="fa-regular fa-pen-to-square"></i></a>
                                                         <button type="button" class="btn btn-danger btn-del-data m-1" data-id="<?php echo $row[0];?>"><i class="fa-regular fa-trash-can"></i></button>
                                                     </td>
                                                 </tr>
                                             
                                             <?php
+                                            $i++;
                                                 }
                                             ?>  
                                         </tbody>

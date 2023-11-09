@@ -85,20 +85,23 @@
         move_uploaded_file($fileTemp,$dir.$webpImagePath);
         // $img = resize_image($dir.$webpImagePath, $newWidth, $newHeight);
         // imagejpeg($img, $dir."output.".$ext);
-        if($ext == "png"){
-            $image = imagecreatefrompng($dir.$webpImagePath);
-        }else{
-            $image = imagecreatefromjpeg($dir.$webpImagePath);
+        
+        if($ext != "webp"){
+            if($ext == "png"){
+                $image = imagecreatefrompng($dir.$webpImagePath);
+            }else{
+                $image = imagecreatefromjpeg($dir.$webpImagePath);
+            }
+    
+            if ($image) {
+                imagewebp($image, $dir.$webpPath);
+                imagedestroy($image);
+                unlink($dir.$webpImagePath); 
+            } else {
+                echo 'Failed to load image.';
+            }
         }
-
-        if ($image) {
-            imagewebp($image, $dir.$webpPath);
-            imagedestroy($image);
-            unlink($dir.$webpImagePath); 
-        } else {
-            echo 'Failed to load image.';
-        }
-
+        
         return $webpPath;
     }
 

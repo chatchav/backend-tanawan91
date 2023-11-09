@@ -219,6 +219,60 @@
             ");
             echo "Success";
           break;
+          case "sortup":
+            $id = $_POST["id"];
+            $res = sql_query("
+                select seq, DownID, DownSorterIndex, UpID, UpSorterIndex 
+                from( 
+                    SELECT projectId , seq, 
+                        lead(projectId ) over(order by seq desc) DownID, 
+                        lag(projectId ) over(order by seq desc) UpID, 
+                        lead(seq) over(order by seq desc) DownSorterIndex, 
+                        lag(seq) over(order by seq desc) UpSorterIndex 
+                    FROM projects 
+                    where Status = 'A' 
+                ) a 
+                where projectId = '".$id."' 
+            ");
+            while ($row = mysqli_fetch_row($res)) {
+                $upSeq = $row[4];
+                $upId = $row[3];
+                $seq = $row[0];
+                $res1 = sql_query("update projects set seq = '".$upSeq."' where projectId = '".$id."'");
+                $res2 = sql_query("update projects_th set seq = '".$seq."' where projectId = '".$upId."'");
+
+                $res1 = sql_query("update projects_th set seq = '".$upSeq."' where projectId = '".$id."'");
+                $res2 = sql_query("update projects_th set seq = '".$seq."' where projectId = '".$upId."'");
+            }
+            echo "Success";
+        break;
+        case "sortdown":
+            $id = $_POST["id"];
+            $res = sql_query("
+                select seq, DownID, DownSorterIndex, UpID, UpSorterIndex 
+                from( 
+                    SELECT projectId , seq, 
+                        lead(projectId ) over(order by seq desc) DownID, 
+                        lag(projectId ) over(order by seq desc) UpID, 
+                        lead(seq) over(order by seq desc) DownSorterIndex, 
+                        lag(seq) over(order by seq desc) UpSorterIndex 
+                    FROM projects 
+                    where Status = 'A' 
+                ) a 
+                where projectId = '".$id."' 
+            ");
+            while ($row = mysqli_fetch_row($res)) {
+                $downSeq = $row[2];
+                $downId = $row[1];
+                $seq = $row[0];
+                $res1 = sql_query("update projects set seq = '".$downSeq."' where projectId = '".$id."'");
+                $res2 = sql_query("update projects set seq = '".$seq."' where projectId = '".$downId."'");
+
+                $res1 = sql_query("update projects_th set seq = '".$downSeq."' where projectId = '".$id."'");
+                $res2 = sql_query("update projects_th set seq = '".$seq."' where projectId = '".$downId."'");
+            }
+            echo "Success";
+          break;
         default:
             $data = getRowsData("select statusId, statusName, CreateDate from setting_project_status where status = 'A'");
             echo json_encode($data);

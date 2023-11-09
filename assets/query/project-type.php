@@ -11,15 +11,16 @@
 
     switch ($flag) {
         case "add":
+            $seq = getSeq('setting_project_type');
             $chkdup = chkDup("select typeId from setting_project_type where urlFriendly = '".$urlFriendly."'");
             if( $chkdup > 0){
                 echo "This type already exists.";
             }else{
                 $res = sql_query("
                     insert into setting_project_type(
-                        typeName, urlFriendly, status
+                        typeName, urlFriendly, status, seq
                     )values(
-                        '".$title."', '".$urlFriendly."', 'A'
+                        '".$title."', '".$urlFriendly."', 'A', '".$seq."'
                     )
                 ");
                 echo "Success";

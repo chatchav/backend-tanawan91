@@ -1,6 +1,8 @@
 <?php 
     @session_start();
-    
+    if($_SESSION["lang"]==""){
+        $_SESSION["lang"] = "EN";
+    }
 ?>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
