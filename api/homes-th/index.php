@@ -41,7 +41,7 @@ switch ($method) {
             $stmt = $db->query("SELECT * FROM publications_th WHERE status = 'A' ORDER BY seq DESC LIMIT 8");
             $homeArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $db->query("SELECT * FROM contact");
+            $stmt = $db->query("SELECT * FROM contact_th");
             $homeContact = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $stmt = $db->query("SELECT * FROM setting_website");
