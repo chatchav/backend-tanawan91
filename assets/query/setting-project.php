@@ -10,6 +10,9 @@
 
     switch ($flag) {
         case "update":
+            $title = mysqli_real_escape_string($con, $title);
+            $title_th = mysqli_real_escape_string($con, $title_th);
+            
             $chk = chkDup("select page from setting_website where page = '".$page."'");
             if( $chk > 0){
                 $res = sql_query("

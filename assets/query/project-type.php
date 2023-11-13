@@ -11,6 +11,9 @@
 
     switch ($flag) {
         case "add":
+            $title = mysqli_real_escape_string($con, $title);
+            $title_th = mysqli_real_escape_string($con, $title_th);
+
             $seq = getSeq('setting_project_type');
             $chkdup = chkDup("select typeId from setting_project_type where urlFriendly = '".$urlFriendly."'");
             if( $chkdup > 0){
@@ -18,9 +21,9 @@
             }else{
                 $res = sql_query("
                     insert into setting_project_type(
-                        typeName, urlFriendly, status, seq
+                        typeName, typeNameTH, urlFriendly, status, seq
                     )values(
-                        '".$title."', '".$urlFriendly."', 'A', '".$seq."'
+                        '".$title."', '".$title_th."', '".$urlFriendly."', 'A', '".$seq."'
                     )
                 ");
                 echo "Success";
@@ -29,6 +32,9 @@
             break;
         case "update":
             $id = $_POST["id"];
+            $title = mysqli_real_escape_string($con, $title);
+            $title_th = mysqli_real_escape_string($con, $title_th);
+            
             $chkdup = chkDup("select typeId from setting_project_type where urlFriendly = '".$urlFriendly."' and typeId != '".$id."'");
             if( $chkdup > 0){
                 echo "This type already exists.";

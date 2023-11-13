@@ -10,7 +10,7 @@
     //$title_th = (isset($_POST["title_th"]) ? $_POST["title_th"] : "");
     $urlFriendly = "";
     if($title != ""){
-        $urlFriendly = str_replace(" ","-",strtolower($title)); 
+        $urlFriendly = str_replace(" ","-",str_replace("'","",strtolower($title))); 
     }
     $lang ="";
     if($_SESSION["lang"] != "EN"){
@@ -28,6 +28,11 @@
 
     switch ($flag) {
         case "add":
+            $title = mysqli_real_escape_string($con, $title);
+            $keyword = mysqli_real_escape_string($con, $keyword);
+            $desc = mysqli_real_escape_string($con, $desc);
+            $shortdesc = mysqli_real_escape_string($con, $shortdesc);
+            
             $seq = getSeq('publications');
             $res = sql_query("
                 insert into publications".$lang."(
@@ -83,6 +88,10 @@
             break;
         case "update":
             $id = $_POST["id"];
+            $title = mysqli_real_escape_string($con, $title);
+            $keyword = mysqli_real_escape_string($con, $keyword);
+            $desc = mysqli_real_escape_string($con, $desc);
+            $shortdesc = mysqli_real_escape_string($con, $shortdesc);
             $res = sql_query("
                 update publications".$lang."
                 set 
@@ -93,6 +102,11 @@
                     shortDescription = '".$shortdesc."'
                 where publicId = '".$id."'
             ");
+
+            $res1 = sql_query("update publications set image = '".$imgName."' where publicId = '".$id."'");
+            $res2 = sql_query("update publications_th set image = '".$imgName."' where publicId = '".$id."'");
+            
+
             echo "Success";
             
             break;

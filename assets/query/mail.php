@@ -6,6 +6,7 @@
 
     switch ($flag) {
         case "add":
+            $title = mysqli_real_escape_string($con, $title);
             $chkdup = chkDup("select id from setting_mail where email = '".$title."'");
             if( $chkdup > 0){
                 echo "This type already exists.";
@@ -23,6 +24,7 @@
             break;
         case "update":
             $id = $_POST["id"];
+            $title = mysqli_real_escape_string($con, $title);
             $chkdup = chkDup("select id from setting_mail where email = '".$title."' and id != '".$id."'");
             if( $chkdup > 0){
                 echo "This type already exists.";

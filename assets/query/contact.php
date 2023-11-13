@@ -26,14 +26,17 @@
     switch ($flag) {
         case "update":
             $chk = chkDup("select contactId from contact");
+            $desc = mysqli_real_escape_string($con, $desc);
             if( $chk > 0){
                 $res = sql_query("
                     update contact".$lang."
-                    set 
-                        image = '".$imgName."', 
+                    set
                         mapURL = '".$mapurl."',
                         description = '".$desc."'
                 ");
+
+                $res1 = sql_query("update contact set image = '".$imgName."'");
+                $res2 = sql_query("update contact_th set image = '".$imgName."'");
             }else{
                 $res = sql_query("
                     insert into contact(

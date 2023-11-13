@@ -9,7 +9,7 @@
     //$title_th = (isset($_POST["title_th"]) ? $_POST["title_th"] : "");
     $urlFriendly = "";
     if($title != ""){
-        $urlFriendly = str_replace(" ","-",strtolower($title)); 
+        $urlFriendly = str_replace(" ","-",str_replace("'","",strtolower($title))); 
     }
     $lang ="";
     if($_SESSION["lang"] != "EN"){
@@ -31,6 +31,8 @@
     switch ($flag) {
         case "add":
             $seq = getSeq('about');
+            $title = mysqli_real_escape_string($con, $title);
+            $desc = mysqli_real_escape_string($con, $desc);
             sql_query("
                 insert into about".$lang."(
                     image, 
@@ -81,15 +83,19 @@
             break;
         case "update":
             $id = $_POST["id"];
+            $title = mysqli_real_escape_string($con, $title);
+            $desc = mysqli_real_escape_string($con, $desc);
             $res = sql_query("
                 update about".$lang."
                 set 
-                    image = '".$imgName."', 
                     title = '".$title."',
                     metaKeyword = '".$keyword."', 
                     description = '".$desc."'
                 where aboutId = '".$id."'
             ");
+
+            $res1 = sql_query("update about set image = '".$imgName."' where aboutId = '".$id."'");
+            $res2 = sql_query("update about_th set image = '".$imgName."' where aboutId = '".$id."'");
             echo "Success";
             
             break;

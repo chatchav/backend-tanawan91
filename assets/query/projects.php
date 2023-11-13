@@ -21,7 +21,7 @@
 
     $urlFriendly = "";
     if($title != ""){
-        $urlFriendly = str_replace(" ","-",strtolower($title)); 
+        $urlFriendly = str_replace(" ","-",str_replace("'","",strtolower($title))); 
     }
 
     $lang ="";
@@ -42,6 +42,16 @@
 
     switch ($flag) {
         case "add":
+            $title = mysqli_real_escape_string($con, $title);
+            $keyword = mysqli_real_escape_string($con, $keyword);
+            $desc = mysqli_real_escape_string($con, $desc);
+            $shortdesc = mysqli_real_escape_string($con, $shortdesc);
+            $location = mysqli_real_escape_string($con, $location);
+            $area = mysqli_real_escape_string($con, $area);
+            $client = mysqli_real_escape_string($con, $client);
+            $architect = mysqli_real_escape_string($con, $architect);
+            $contractor = mysqli_real_escape_string($con, $contractor);
+
             $lastId = query_insert("insert into projects".$lang."(
                 image, 
                 title, 
@@ -139,6 +149,17 @@
             break;
         case "update":
             $id = $_POST["id"];
+
+            $title = mysqli_real_escape_string($con, $title);
+            $keyword = mysqli_real_escape_string($con, $keyword);
+            $desc = mysqli_real_escape_string($con, $desc);
+            $shortdesc = mysqli_real_escape_string($con, $shortdesc);
+            $location = mysqli_real_escape_string($con, $location);
+            $area = mysqli_real_escape_string($con, $area);
+            $client = mysqli_real_escape_string($con, $client);
+            $architect = mysqli_real_escape_string($con, $architect);
+            $contractor = mysqli_real_escape_string($con, $contractor);
+
             sql_query("
                 update projects".$lang."
                 set 
@@ -157,6 +178,10 @@
                     contractor = '".$contractor."'
                 where projectId = '".$id."'
             ");
+
+            $res1 = sql_query("update projects set image = '".$imgName."' where projectId = '".$id."'");
+            $res2 = sql_query("update projects_th set image = '".$imgName."' where projectId = '".$id."'");
+            
             sql_query("delete from project_albums where projectId = '".$id."'");
             for($i = 0; $i<$countAlbum; $i++){
                 $imgOld = (isset($_POST["albumOld"][$i]) ? $_POST["albumOld"][$i] : "");
@@ -174,6 +199,8 @@
                     )
                 ");
             }
+
+            
             echo "Success";
             
             break;

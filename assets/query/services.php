@@ -17,6 +17,8 @@
     switch ($flag) {
         case "add":
                 $seq = getSeq('services');
+                $desc = mysqli_real_escape_string($con, $desc);
+                $title = mysqli_real_escape_string($con, $title);
                 $res = sql_query("
                     insert into services".$lang."(
                         title,
@@ -55,6 +57,8 @@
             break;
         case "update":
             $id = $_POST["id"];
+            $desc = mysqli_real_escape_string($con, $desc);
+            $title = mysqli_real_escape_string($con, $title);
             $res = sql_query("
                 update services".$lang."
                 set 

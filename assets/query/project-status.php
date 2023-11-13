@@ -11,15 +11,18 @@
 
     switch ($flag) {
         case "add":
+            $title = mysqli_real_escape_string($con, $title);
+            $title_th = mysqli_real_escape_string($con, $title_th);
+            
             $chkdup = chkDup("select statusId from setting_project_status where statusName = '".$title."'");
             if( $chkdup > 0){
                 echo "This type already exists.";
             }else{
                 $res = sql_query("
                     insert into setting_project_status(
-                        statusName, status
+                        statusName, statusNameTH, status
                     )values(
-                        '".$title."', 'A'
+                        '".$title."', '".$title_th."', 'A'
                     )
                 ");
                 echo "Success";
@@ -28,6 +31,9 @@
             break;
         case "update":
             $id = $_POST["id"];
+            $title = mysqli_real_escape_string($con, $title);
+            $title_th = mysqli_real_escape_string($con, $title_th);
+            
             $chkdup = chkDup("select statusId from setting_project_status where statusName = '".$title."' and statusId != '".$id."'");
             if( $chkdup > 0){
                 echo "This type already exists.";
